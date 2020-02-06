@@ -1,39 +1,30 @@
 Vagrant.configure("2") do |config|
-    config.vm.define "web1" do |web1|
-      web1.vm.box = "generic/debian10"
-    end
+  ansible_groups = Hash.new
+  kinds   = ["app", "db", "web"]
+  distros = ["debian", "ubuntu", "centos"]
+  images  = ["generic/debian10", "generic/ubuntu1804", "generic/centos7"]
 
-    config.vm.define "web2" do |web2|
-      web2.vm.box = "generic/ubuntu1804"
-    end
+  if distros.length != images.length
+    raise Exception.new "Config error: There should be equal number of elements in distros and images"
+  end
 
-    config.vm.define "web3" do |web3|
-      web3.vm.box = "generic/centos7"
-    end
+  kinds.each do |server_type|
+    ansible_groups[server_type] = Array.new
+    (1..distros.length).zip(distros, images).each do |index, distro, image|
+      if ! ansible_groups[distro]
+        ansible_groups[distro] = Array.new
+      end
 
-    config.vm.define "app1" do |app1|
-      app1.vm.box = "generic/debian10"
-    end
+      node_name = "#{server_type}#{index}-#{distro}"
 
-    config.vm.define "app2" do |app2|
-      app2.vm.box = "generic/debian10"
-    end
+      ansible_groups[server_type] << node_name
+      ansible_groups[distro] << node_name
 
-    config.vm.define "app3" do |app3|
-      app3.vm.box = "generic/centos7"
+      config.vm.define node_name do |node|
+        node.vm.box = "#{image}"
+      end
     end
-
-    config.vm.define "db1" do |db1|
-      db1.vm.box = "generic/debian10"
-    end
-
-    config.vm.define "db2" do |db2|
-      db2.vm.box = "generic/ubuntu1804"
-    end
-
-    config.vm.define "db3" do |db3|
-      db3.vm.box = "generic/centos7"
-    end
+  end
 
   config.vm.provider "hyperv" do |hyperv|
     hyperv.memory = 512
@@ -43,13 +34,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.compatibility_mode = "2.0"
     ansible.playbook = "site.yml"
-    ansible.groups = {
-      "web" => ["web*"],
-      "app" => ["app*"],
-      "db"  => ["db*"],
-      "debian" => ["*1"],
-      "ubuntu" => ["*2"],
-      "centos" => ["*3"]
-    }
+    ansible.groups = ansible_groups
   end
 end
