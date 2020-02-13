@@ -1,0 +1,14 @@
+#!/bin/sh
+
+generate_key() {
+    type=$1
+    key=/etc/ssh/ssh_host_${type}_key
+    if ! [ -f "$key" ] ; then
+        echo ssh-keygen -t $type -f $key -N ""
+        ssh-keygen -t $type -f $key -N ""
+    fi
+}
+
+generate_key rsa
+generate_key ecdsa
+generate_key ed25519

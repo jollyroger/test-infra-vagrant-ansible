@@ -1,0 +1,12 @@
+[Unit]
+Description=Initial generation of the SSH server keys
+Before=ssh.service
+AssertPathExists=/etc/ssh
+
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/generate-ssh-keys
+
+[Install]
+WantedBy=multi-user.target
