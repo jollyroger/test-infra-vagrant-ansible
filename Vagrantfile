@@ -74,7 +74,7 @@ Vagrant.configure("2") do |config|
           docker.name = node_name
           docker.build_dir = "."
           docker.has_ssh = true
-          docker.dockerfile = "#{dockerfile}"
+          docker.dockerfile = "dockerfiles/#{dockerfile}"
           docker.create_args = ["--rm", "--privileged", "-v", "/sys/fs/cgroup:/sys/fs/cgroup:ro"]
           docker.build_args  = ["-t", "#{image}"]
         end

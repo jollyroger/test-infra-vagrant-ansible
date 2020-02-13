@@ -25,8 +25,8 @@ RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
     /lib/systemd/system/systemd-update-utmp* \
     /usr/lib/tmpfiles.d/systemd-nologin.conf
 
-COPY generate-ssh-keys.service /etc/systemd/system
-COPY generate-ssh-keys /usr/local/bin
+COPY helpers/generate-ssh-keys.service /etc/systemd/system
+COPY helpers/generate-ssh-keys /usr/local/bin
 
 RUN apt-get update && apt-get install -y openssh-server openssh-client sudo \
     rsyslog python3-minimal && \
