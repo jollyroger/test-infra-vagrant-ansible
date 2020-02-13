@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Andrii Senkovych
+  role_name: openssh
+  description: Install and configure openssh server.
+  company: none
+  license: Apache-2.0
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags:
+    - openssh
+    - debian
+    - ubuntu
+    - centos
+
+dependencies: []

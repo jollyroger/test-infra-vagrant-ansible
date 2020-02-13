@@ -1,0 +1,27 @@
+---
+# defaults file for openssh
+
+_openssh_run_directory:
+  default: /var/run/sshd
+  RedHat: /run
+  Debian: /run/sshd
+
+openssh_run_directory: "{{ _openssh_run_directory[ansible_os_family] | default(_openssh_run_directory['default']) }}"
+
+openssh_run_directory_mode: "0755"
+openssh_run_directory_owner: root
+openssh_run_directory_group: root
+
+openssh_configuration_file: /etc/ssh/sshd_config
+
+_openssh_configuration_file_mode:
+  default: "0644"
+  RedHat:  "0600"
+  Suse:    "0640"
+
+openssh_configuration_file_mode: "{{ _openssh_configuration_file_mode[ansible_os_family] | default(_openssh_configuration_file_mode['default']) }}"
+
+openssh_configuration_file_owner: root
+openssh_configuration_file_group: root
+
+openssh_service: sshd

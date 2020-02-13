@@ -1,3 +1,4 @@
+# ex: ft=ruby
 require "open-uri"
 
 Vagrant.configure("2") do |config|
@@ -67,7 +68,9 @@ Vagrant.configure("2") do |config|
 
       ansible_groups[server_type] << node_name
       ansible_groups[distro] << node_name
-      ansible_host_vars[node_name] = { "ansible_python_interpreter" => "/usr/bin/python3" }
+      ansible_host_vars[node_name] = {
+          "ansible_python_interpreter" => distro == "centos7" ? "/usr/bin/python2.7" : "/usr/bin/python3" 
+      }
 
       config.vm.define "#{node_name}" do |node|
         node.vm.provider "docker" do |docker|
@@ -86,7 +89,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.compatibility_mode = "2.0"
-    ansible.playbook = "site.yml"
+    ansible.playbook = "init.yml"
     ansible.groups = ansible_groups
     ansible.host_vars = ansible_host_vars
   end

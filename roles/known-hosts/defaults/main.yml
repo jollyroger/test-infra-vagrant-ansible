@@ -1,0 +1,28 @@
+---
+# defaults for known-hosts
+
+# Default settings for known_hosts_file
+known_hosts_file: /etc/ssh/ssh_known_hosts
+known_hosts_file_owner: root
+known_hosts_file_group: root
+known_hosts_file_mode: "0644"
+
+# If key type is listed in `known_hosts_exclude_key_types`, all public keys of
+# the following type will be excluded from the generated YAML file and will not
+# get to any hosts
+known_hosts_exclude_key_types: ["dsa"]
+
+# TODO: not implemented
+# If `known_hosts_prefer_key_type` is set then only one public key per host
+# will be added to the known_hosts file if found. Otherwise all available host
+# keys will be added to the known_hosts file. The same is done when there is no
+# key of the preferred type available.
+known_hosts_prefer_key_type: "ecdsa"
+
+# Add public key paired wih server's IP address to succeed verification when
+# using IP address to access server
+known_hosts_register_hostname: true
+
+# Add public key paired wih server's hostname to succeed verification when
+# using hostname to access server
+known_hosts_register_ip: true

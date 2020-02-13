@@ -1,0 +1,35 @@
+{# key prefix to look for OpenSSH host keys #}
+{%- set key_prefix = 'ansible_ssh_host_key' %}
+
+{#
+key_type_map maps the key type from ansible value name into string we should
+put into the 'known_hosts' file
+#}
+{%- set key_type_map = {
+  'dsa':'ssh-dsa',
+  'rsa':'ssh-rsa',
+  'ecdsa':'ecdsa-sha2-nistp256',
+  'ed25519': 'ssh-ed25519'
+  }
+%}
+
+{%- for host in play_hosts %}
+{#
+ssh_host_map maps host's IP and hostname with role settings to check if we need
+to add the respective records
+#}
+{%-   set ssh_host_map = {
+       hostvars[host]['ansible_default_ipv4']['address']: known_hosts_register_ip,
+       host: known_hosts_register_hostname
+     }
+-%}
+
+{%   for ssh_host, do_use in ssh_host_map.items() if do_use %}
+{%     for key, value in hostvars[host].items() if key.startswith(key_prefix) %}
+{%       set key_type = key.split('_')[-2] %}
+{%       if key_type not in known_hosts_exclude_key_types %}
+{{ ssh_host }} {{ key_type_map[key_type] }} {{ value }}
+{%       endif %}
+{%     endfor %}
+{%   endfor %}
+{% endfor %}

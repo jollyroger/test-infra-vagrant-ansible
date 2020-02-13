@@ -1,0 +1,10 @@
+---
+- hosts: app
+  become: true
+
+  tasks:
+    - name: Local application build
+      ping:
+
+    - name: Application deploy to servers
+      ping:

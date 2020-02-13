@@ -1,0 +1,9 @@
+---
+# A simple playbook to ensure there are necessary packages installed to run
+# ansible. It does not apply any decent configuration to prevent fails during
+# initial provisioning that could lead to incomplete ansible inventory.
+
+- hosts: all
+  become: true
+  roles:
+    - role: openssh

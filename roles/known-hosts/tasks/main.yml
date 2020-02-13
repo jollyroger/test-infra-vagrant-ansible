@@ -1,0 +1,20 @@
+---
+# tasks file for known-hosts
+
+- name: Collect all host public keys to a single YAML for further include
+  template:
+    src: known_hosts.j2
+    dest: known_hosts.block
+  become: false
+  run_once: true
+  delegate_to: localhost
+
+- name: Ensure that known_hosts_file has correct permissions
+  blockinfile:
+    state: present
+    create: yes
+    path: "{{ known_hosts_file }}"
+    mode: "{{ known_hosts_file_mode }}"
+    owner: "{{ known_hosts_file_owner }}"
+    group: "{{ known_hosts_file_group }}"
+    block: " {{ lookup('file', 'known_hosts.block') }}"

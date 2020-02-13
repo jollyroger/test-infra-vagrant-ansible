@@ -1,0 +1,32 @@
+---
+# tasks file for openssh
+
+- name: Install openssh server
+  package:
+    name: "{{ openssh_packages }}"
+    state: present
+
+- name: Prepare run directory for openssh server
+  file:
+    state: directory
+    path:  "{{ openssh_run_directory }}"
+    mode:  "{{ openssh_run_directory_mode }}"
+    owner: "{{ openssh_run_directory_owner }}"
+    group: "{{ openssh_run_directory_group }}"
+  # Do not run this task for PID directory that is not exclusive to OpenSSH
+  when: openssh_run_directory not in ["/run", "/var/run"]
+
+- name: Ensure correct openssh configuration file permissions
+  file:
+    state: file
+    path:  "{{ openssh_configuration_file }}"
+    mode:  "{{ openssh_configuration_file_mode }}"
+    owner: "{{ openssh_configuration_file_owner }}"
+    group: "{{ openssh_configuration_file_group }}"
+
+
+- name: Start and enable openssh server
+  service:
+    name: "{{ openssh_service }}"
+    state: started
+    enabled: yes

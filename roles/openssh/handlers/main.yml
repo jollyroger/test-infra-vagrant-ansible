@@ -1,0 +1,6 @@
+---
+# handlers file for openssh
+- name: restart openssh
+  service:
+    name: "{{ openssh_service }}"
+    state: restarted

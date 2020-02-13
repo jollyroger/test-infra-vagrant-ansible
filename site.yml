@@ -1,7 +1,8 @@
 ---
-- hosts: all
-  become: true
+# order matters: we want database and web server to be available _before_
+# application is actually deployed
 
-  tasks:
-    - name: test connection
-      ping:
+- import_playbook: common.yml
+- import_playbook: db.yml
+- import_playbook: web.yml
+- import_playbook: app.yml
