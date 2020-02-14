@@ -1,0 +1,11 @@
+---
+# vars file for ping
+_ping_package:
+  default:
+    - iputils
+  Debian:
+    - iputils-ping
+  Ubuntu:
+    - iputils-ping
+
+ping_package: "{{ _ping_package[ansible_os_family] | default(_ping_package['default']) }}"

@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: false
+  tasks:
+    - name: Test connection to random host in a play
+      command: "ping -c1 {{ play_hosts|random }}"
+      changed_when: False

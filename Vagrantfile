@@ -80,7 +80,7 @@ Vagrant.configure("2") do |config|
       }
 
       config.vm.define "#{node_name}" do |node|
-        node.vm.network :private_network, type: "dhcp", subnet: "172.25.0.0/16"
+        node.vm.network :private_network, type: "dhcp"
         node.vm.provider "docker" do |docker|
           docker.name = node_name
           docker.build_dir = "."

@@ -1,0 +1,7 @@
+---
+# tasks file for ping
+
+- name: Ensure ping package is installed
+  package:
+    name: "{{ ping_package }}"
+    state: present

@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Andrii Senkovych
+  role_name: ping
+  description: Install ping utility from iputils
+  company: none
+  license: Apache-2.0
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags:
+    - ping
+    - debian
+    - ubuntu
+    - centos
+
+dependencies: []

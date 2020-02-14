@@ -6,4 +6,4 @@
 - hosts: all
   become: true
   roles:
-    - role: openssh
+    - role: ping
