@@ -5,14 +5,13 @@ Vagrant.configure("2") do |config|
 
   # Check and download vagrant pubkey to include in the Docker images
   config.trigger.before :up do |trigger|
-    trigger.name = "Downloading insecure Vagrant SSH public key"
+    trigger.name = "Prepare insecure Vagrant SSH public key"
     trigger.ruby do |env, machine|
       vagrant_pubkey_url = "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"
       vagrant_pubkey_name = ".vagrant/vagrant.pub"
 
-      trigger.info = "Check if vagrant SSH public key is present"
-      if not File.file?(vagrant_pubkey_name)
-        trigger.info = "Vagrant insecure SSH public key is not present. Trying to download.."
+      if (not File.file?(vagrant_pubkey_name))
+        trigger.info = "Vagrant's insecure SSH public key is not present. Downloading..."
         open(vagrant_pubkey_url) do |pubkey|
           File.open(vagrant_pubkey_name, "wb") do |file|
             file.write(pubkey.read)
