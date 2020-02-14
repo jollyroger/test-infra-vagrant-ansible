@@ -10,7 +10,7 @@ provision initial host coniguration on each container and generate Ansible
 inventory file that will be used for future Ansible invocations. Here you can
 see an example of this process:
 
-[![asciicast](https://asciinema.org/a/z5asYPIoZxOPXXNsLf87b4ujU.svg)](https://asciinema.org/a/z5asYPIoZxOPXXNsLf87b4ujU)
+[![asciicast](https://asciinema.org/a/rihUBbMsBQqS36rQU8I24dBAZ.svg)](https://asciinema.org/a/rihUBbMsBQqS36rQU8I24dBAZ)
 
 ## TODO:
 
