@@ -25,9 +25,9 @@ Vagrant.configure("2") do |config|
   # Use docker as the backend
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
   # Prevent parallel execution
-  ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+  #ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 
-  # declare a hash where all containers are put to seed Ansible inventory
+  # declare hashes to feed to Ansible inventory
   ansible_groups = {}
   ansible_host_vars = {}
 
@@ -92,8 +92,6 @@ Vagrant.configure("2") do |config|
       end
     end
   end
-
-  #print ansible_host_vars
 
   config.vm.provision "ansible" do |ansible|
     ansible.compatibility_mode = "2.0"
