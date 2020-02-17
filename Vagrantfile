@@ -1,6 +1,41 @@
 # ex: ft=ruby
 require "open-uri"
 
+# Use docker as the backend
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+# Prevent parallel execution
+#ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+vagrant_pubkey_url = "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"
+vagrant_pubkey_name = ".vagrant/vagrant.pub"
+
+kinds   = [ "app", "db", "web" ]
+
+images = [
+    {
+      distribution: "debian",
+      dockerfile: "debian10-systemd.Dockerfile",
+      tag: "local-debian10/systemd",
+      python_interpreter: "/usr/bin/python3"
+    }, {
+      distribution: "ubuntu",
+      dockerfile: "ubuntu1804-systemd.Dockerfile",
+      tag: "local-ubuntu1804/systemd",
+      python_interpreter: "/usr/bin/python3"
+    }, {
+      distribution: "centos7",
+      dockerfile: "centos7-systemd.Dockerfile",
+      tag: "local-centos7/systemd",
+      python_interpreter: "/usr/bin/python2.7"
+    }, {
+      distribution: "centos8",
+      dockerfile: "centos8-systemd.Dockerfile",
+      tag: "local-centos8/systemd",
+      python_interpreter: "/usr/bin/python3"
+    }
+]
+
 Vagrant.configure("2") do |config|
 
   # Check and download vagrant pubkey to include in the Docker images
@@ -22,40 +57,10 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # Use docker as the backend
-  ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
-  # Prevent parallel execution
-  #ENV['VAGRANT_NO_PARALLEL'] = 'yes'
-
   # declare hashes to feed to Ansible inventory
   ansible_groups = {}
   ansible_host_vars = {}
 
-  kinds   = [ "app", "db", "web" ]
-
-  images = [
-      {
-        distribution: "debian",
-        dockerfile: "debian10-systemd.Dockerfile",
-        tag: "local-debian10/systemd",
-        python_interpreter: "/usr/bin/python3"
-      }, {
-        distribution: "ubuntu",
-        dockerfile: "ubuntu1804-systemd.Dockerfile",
-        tag: "local-ubuntu1804/systemd",
-        python_interpreter: "/usr/bin/python3"
-      }, {
-        distribution: "centos7",
-        dockerfile: "centos7-systemd.Dockerfile",
-        tag: "local-centos7/systemd",
-        python_interpreter: "/usr/bin/python2.7"
-      }, {
-        distribution: "centos8",
-        dockerfile: "centos8-systemd.Dockerfile",
-        tag: "local-centos8/systemd",
-        python_interpreter: "/usr/bin/python3"
-      }
-  ]
 
   # Start multiple instances according to the instances matrix. The names will
   # be in format <kind><count>-<distribution>, for example app1-debian
