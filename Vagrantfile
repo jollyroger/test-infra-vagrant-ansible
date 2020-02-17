@@ -48,8 +48,8 @@ Vagrant.configure("2") do |config|
       if (not File.file?(vagrant_pubkey_name))
         trigger.info = "Vagrant's insecure SSH public key is not present. Downloading..."
         open(vagrant_pubkey_url) do |pubkey|
-          File.open(vagrant_pubkey_name, "wb") do |file|
-            file.write(pubkey.read)
+          File.open(vagrant_pubkey_name, "wb") do |pubkey_file|
+            pubkey_file.write(pubkey.read)
             trigger.info = "Download complete. Saved key to #{vagrant_pubkey_name}"
           end
         end
