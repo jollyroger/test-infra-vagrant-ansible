@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
       vagrant_pubkey_url = "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"
       vagrant_pubkey_name = ".vagrant/vagrant.pub"
 
-      if (not File.file?(vagrant_pubkey_name))
+      unless File.file?(vagrant_pubkey_name)
         trigger.info = "Vagrant's insecure SSH public key is not present. Downloading..."
         open(vagrant_pubkey_url) do |pubkey|
           File.open(vagrant_pubkey_name, "wb") do |pubkey_file|
