@@ -3,6 +3,7 @@ require "open-uri"
 
 # Use docker as the backend
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
 
 # Prevent parallel execution
 #ENV['VAGRANT_NO_PARALLEL'] = 'yes'
@@ -39,7 +40,7 @@ images = [
 Vagrant.configure("2") do |config|
 
   # Check and download vagrant pubkey to include in the Docker images
-  config.trigger.before :up do |trigger|
+  config.trigger.before :up, type: :command do |trigger|
     trigger.name = "Prepare insecure Vagrant SSH public key"
     trigger.ruby do |env, machine|
       vagrant_pubkey_url = "https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub"
@@ -98,5 +99,10 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "init.yml"
     ansible.groups = ansible_groups
     ansible.host_vars = ansible_host_vars
+  end
+
+  config.trigger.after :up, type: :command do |trigger|
+    trigger.name = "Check network connectivity between provisioned hosts"
+    trigger.run = {inline: "ansible-playbook ping.yml"}
   end
 end
